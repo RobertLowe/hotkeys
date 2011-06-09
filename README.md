@@ -9,7 +9,8 @@ A simple gem which allows you to bind global hot keys with macruby
 Usage example:
 `macruby examples/simple.rb`
 
-      require File.dirname(__FILE__) + '/lib/hotkeys'
+      require 'rubygems'
+      require 'hotkeys'
 
       # Delegate method called when the app finished loading
       def applicationDidFinishLaunching(notification)
