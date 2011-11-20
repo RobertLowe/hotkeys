@@ -43,9 +43,9 @@ class HotKeys
         keyModifiers = HotKeys::Support::Keys::Mappings.select {|key, value| key =~ /Key$/ }
         keyCodes     = HotKeys::Support::Keys::Mappings.select {|key, value| !(key =~ /Key$/) }
 
-        keyModifiersRegexPart = keyModifiers.map {|key, value| key.gsub(/Key$/, "")}.join("|")
+        keyModifiersRegexPart = keyModifiers.map {|key, value| key.gsub(/Key$/, "")}.sort_by {|x| x.length}.reverse.join("|")
         keyModifiers          = keyModifiers.map {|key, value| {key.gsub(/Key$/, "").to_s.downcase => value}}.inject({}) {|retval,hash| retval.merge(hash) }
-        keyCodesRegexPart     = keyCodes.map     {|key, value| key                 }.join("|")
+        keyCodesRegexPart     = keyCodes.map     {|key, value| key                 }.sort_by {|x| x.length}.reverse.join("|")
         keyCodes              = keyCodes.map     {|key, value| {key.to_s.downcase => value}}.inject({}) {|retval,hash| retval.merge(hash) }
 
         keyRegexString = "(#{keyCodesRegexPart})[\+]?(#{keyModifiersRegexPart})?[\+]?(#{keyModifiersRegexPart})?[\+]?(#{keyModifiersRegexPart})?"

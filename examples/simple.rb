@@ -5,7 +5,7 @@ require 'hotkeys'
 def applicationDidFinishLaunching(notification)
   @hotkeys = HotKeys.new
 
-  @hotkeys.addHotString("R+COMMAND") do
+  @hotkeys.addHotString("Space+OPTION") do
     puts "LOL MACRUBY RUNS"
   end
 
@@ -15,7 +15,7 @@ def applicationDidFinishLaunching(notification)
   # Maybe I'll hack around that with system events for a bypass option, it wouldn't 
   # be elegate, but this is new territory anywho
   #
-  @hotkeys.addHotString("S+COMMAND") do
+  @hotkeys.addHotString("S+OPTION") do
     puts "NO SAVING FOR YOU, LOL" # Trolled myself with this for longer than I should of
   end
 end
