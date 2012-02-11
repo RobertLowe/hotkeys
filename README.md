@@ -1,7 +1,8 @@
 HotKeys
 =====
 
-A simple gem which allows you to bind global hot keys with macruby
+A simple gem which allows you to bind global hot keys with macruby, optionally can also specify
+which application needs to be frontmost (inspired by Keyboard Maestro)
 
 1. `gem install hotkeys`
 2. `macruby examples/simple.rb`
@@ -16,7 +17,9 @@ Usage example:
       def applicationDidFinishLaunching(notification)
         @hotkeys = HotKeys.new
 
-        @hotkeys.addHotString("R+COMMAND") do
+        # Will only trigger if iTerm2 is frontmost application, second option can be left blank
+        # for truly global shortcut
+        @hotkeys.addHotString("Space+OPTION","com.googlecode.iterm2") do
           puts "LOL MACRUBY RUNS"
         end
 
