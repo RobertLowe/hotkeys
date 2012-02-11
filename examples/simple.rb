@@ -7,7 +7,7 @@ def applicationDidFinishLaunching(notification)
 
   # Will only trigger if iTerm2 is frontmost application, second option can be left blank
   # for truly global shortcut
-  @hotkeys.addHotString("Space+OPTION","com.googlecode.iterm2") do
+  @hotkeys.addHotString("Space+OPTION","com.apple.safari") do
     puts "LOL MACRUBY RUNS"
   end
 
