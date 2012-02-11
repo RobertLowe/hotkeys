@@ -26,6 +26,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 framework 'AppKit'
 framework 'Carbon'
 framework 'Cocoa'
+framework 'ScriptingBridge'
 
 # required here, beause we subclass this sucker right away.
 require File.dirname(__FILE__) + '/hotkeys/support/bundles/shortcut'
@@ -38,16 +39,22 @@ class HotKeys < Shortcut
     self.delegate = delegation || self
   end
 
+  def get_frontmost_app
+    sysevent = SBApplication.applicationWithBundleIdentifier("com.apple.systemevents")
+    return sysevent.processes.select {|p| p.frontmost==true}[0].bundleIdentifier
+  end
+  
   def hotkeyWasPressed(key)
-    @keys[key.to_i].call
+    @keys[key.to_i].call if @apps[key.to_i] == "*" || @apps[key.to_i] == get_frontmost_app
   end
 
-  def addHotString(keyString, &block)
+  def addHotString(keyString, app = '*', &block)
     args = HotKeys::Support::Keys.parse(keyString)
-
     @keys ||= []
+    @apps ||= []
     key = self.send(:"addShortcut:withKeyModifier", *args)
     @keys[key] = block
+    @apps[key] = app
   end
 
 end

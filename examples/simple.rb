@@ -5,7 +5,9 @@ require 'hotkeys'
 def applicationDidFinishLaunching(notification)
   @hotkeys = HotKeys.new
 
-  @hotkeys.addHotString("Space+OPTION") do
+  # Will only trigger if Safari is frontmost application, second option can be left blank
+  # for truly global shortcut
+  @hotkeys.addHotString("Space+OPTION","com.apple.safari") do
     puts "LOL MACRUBY RUNS"
   end
 
