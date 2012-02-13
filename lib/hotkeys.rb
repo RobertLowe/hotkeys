@@ -39,22 +39,50 @@ class HotKeys < Shortcut
     self.delegate = delegation || self
   end
 
-  def get_frontmost_app
-    sysevent = SBApplication.applicationWithBundleIdentifier("com.apple.systemevents")
-    return sysevent.processes.select {|p| p.frontmost==true}[0].bundleIdentifier
-  end
-  
   def hotkeyWasPressed(key)
-    @keys[key.to_i].call if @apps[key.to_i] == "*" || @apps[key.to_i] == get_frontmost_app
+    # Matching int
+    configuration = @configurations.detect {|configuration| configuration[:key] == key }
+    str = configuration[:str]
+
+    # Sibling bindings
+    configurations = @configurations.select {|config| config[:str] == str}
+
+    # Run em
+    configurations.each do |configuration|
+      block = configuration[:block]
+      if configuration[:bundle_identifier] == frontmost_bundler_identifier
+          block.call
+      elsif configuration[:bundle_identifier].nil?
+          block.call
+      end
+    end if configurations
   end
 
-  def addHotString(keyString, app = '*', &block)
-    args = HotKeys::Support::Keys.parse(keyString)
-    @keys ||= []
-    @apps ||= []
+  def addHotString(str, options = {}, &block)
+    args = HotKeys::Support::Keys.parse(str)
+    @configurations ||= []
     key = self.send(:"addShortcut:withKeyModifier", *args)
-    @keys[key] = block
-    @apps[key] = app
+    @configurations << {
+      :key => key.to_s,
+      :str => str,
+      :block => block,
+      :bundle_identifier => options.delete(:bundle_identifier)
+    }
+  end
+
+private
+
+  def systemevents
+    @systemevents ||= SBApplication.applicationWithBundleIdentifier("com.apple.systemevents")
+  end
+
+  def frontmost
+    @frontmost = systemevents.processes.select {|process| process.frontmost == true }
+    @frontmost.first
+  end
+
+  def frontmost_bundler_identifier
+    frontmost.bundleIdentifier if frontmost
   end
 
 end

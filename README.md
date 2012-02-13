@@ -43,4 +43,9 @@ Todo
 =====
  * Clean up shortcut.m
 
+
+Known Bugs
+=====
+* Cannot unbind keys, (anyone awesome at objective+c?)
+
 # Copyright (C) 2011 by Robert Lowe <rob[!]iblargz.com> - MIT
